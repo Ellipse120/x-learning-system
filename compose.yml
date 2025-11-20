@@ -1,0 +1,98 @@
+version: '3.9'
+
+services:
+  # Nuxt 4 应用（官方推荐的 nitro + oxc 超快构建）
+  app:
+    image: node:22-alpine
+    container_name: nuxt4-app
+    working_dir: /app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NITRO_PRESET=node-server
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/nuxtdb?schema=public
+    volumes:
+      - ./app:/app
+    command: >
+      sh -c "
+        corepack enable &&
+        corepack prepare pnpm@latest --activate &&
+        pnpm i --frozen-lockfile &&
+        pnpm run build &&     # Nuxt 4 会生成 .output 目录
+        pnpm run start
+      "
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    networks:
+      - nuxt-network
+
+  # PostgreSQL
+  db:
+    image: postgres:16-alpine
+    env_file:
+      - .env
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-supersecret2025}
+      POSTGRES_DB: nuxtdb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"                    # 开发暴露，生产建议移除
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d nuxtdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+    networks:
+      - nuxt-network
+    deploy:       # Docker Swarm 或 docker-compose 都支持
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  # Drizzle 迁移
+  # migrate:
+  #   image: node:22-alpine
+  #   container_name: drizzle-migrate
+  #   working_dir: /app
+  #   environment:
+  #     - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-supersecret2025}@db:5432/nuxtdb?schema=public
+  #   volumes:
+  #     - ./app:/app
+  #   command: >
+  #     sh -c "
+  #       echo 'Waiting for PostgreSQL to be ready...' &&
+  #       until pg_isready -h db -p 5432 -U postgres; do
+  #         echo 'PostgreSQL not ready yet, retry in 2s...'
+  #         sleep 2
+  #       done &&
+  #       echo 'PostgreSQL is ready! Running migration...' &&
+  #       corepack enable &&
+  #       corepack prepare pnpm@latest --activate &&
+  #       pnpm i --frozen-lockfile &&
+  #       pnpm run db:migrate
+  #     "
+  #   # 加这一行就行
+  #   entrypoint: [""]
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   networks:
+  #     - nuxt-network
+
+volumes:
+  postgres-data:
+
+networks:
+  nuxt-network:
+    driver: bridge
+
