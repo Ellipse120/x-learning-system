@@ -8,12 +8,12 @@ export interface User {
 
 export interface LearningMaterial {
   id: string
-  type: number
+  type: string
   content: string
   translation: string
   phoneticSymbol?: string
-  wordType?: number
-  difficulty: number
+  wordType?: string
+  difficulty: string
   createdBy: string
   createdAt: string
 }

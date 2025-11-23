@@ -7,14 +7,14 @@ export default defineNuxtConfig({
     'nuxt-auth-utils'
   ],
 
-  devtools: {
-    enabled: true
-  },
-
   $production: {
     experimental: {
       checkOutdatedBuildInterval: 3600000 // 1h
     }
+  },
+
+  devtools: {
+    enabled: true
   },
 
   app: {
@@ -27,13 +27,27 @@ export default defineNuxtConfig({
     fonts: false
   },
 
+  runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET,
+    defaultPassword: process.env.DEFAULT_PASSWORD
+  },
+
   routeRules: {
-    '/api/**': {
-      cors: true
-    }
+    // '/api/**': {
+    //   cors: true
+    // },
+    '/admin/**': { appMiddleware: 'auth' },
+    '/teacher/**': { appMiddleware: 'auth' },
+    '/student/**': { appMiddleware: 'auth' }
   },
 
   compatibilityDate: '2024-07-11',
+
+  nitro: {
+    imports: {
+      dirs: ['shared/zschema']
+    }
+  },
 
   eslint: {
     config: {

@@ -21,7 +21,14 @@ export default defineNuxtPlugin((nuxtApp) => {
       // }
 
       if (response._data.error) {
-        const msgs = JSON.parse(response._data?.message).map(msg => msg.message).join(', ')
+        let msgs
+
+        try {
+          msgs = JSON.parse(response._data?.message).map(msg => msg.message).join(', ')
+        } catch {
+          msgs = response._data?.message
+        }
+
         toast.add({
           title: msgs || '未知错误!接口可能未返回信息',
           color: 'error'

@@ -4,7 +4,8 @@ import { roleEnum } from './roles'
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
-  username: text('username').notNull(),
+  username: text('username'),
+  email: text('email').notNull(),
   passwordHash: text('password_hash').notNull(), // bcrypt 哈希
   role: roleEnum('role').notNull().default('student'),
   avatar: text('avatar'),

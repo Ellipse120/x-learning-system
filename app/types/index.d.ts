@@ -58,3 +58,6 @@ export interface Range {
   start: Date
   end: Date
 }
+
+export const RoleT = 'student' | 'teacher' | 'admin'
+export type RoleEnum = RoleT[]

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const colorMode = useColorMode()
-
+const appConfig = useAppConfig()
 const color = computed(() => colorMode.value === 'dark' ? '#1b1718' : 'white')
 
 useHead({
@@ -17,8 +17,8 @@ useHead({
   }
 })
 
-const title = 'Nuxt Dashboard Template'
-const description = 'A professional dashboard template built with Nuxt UI, featuring multiple pages, data visualization, and comprehensive management capabilities for creating powerful admin interfaces.'
+const title = appConfig.appInfo.title
+const description = '一个学习网站，业余时间充实自己的地方'
 
 useSeoMeta({
   title,

@@ -1,8 +1,7 @@
 const roleEnum = {
-  teacher: 4,
-  assistant: 2,
-  student: 8,
-  admin: 1
+  teacher: 'teacher',
+  student: 'student',
+  admin: 'admin'
 }
 
 const meterialTypeEnum = {
@@ -31,17 +30,13 @@ const difficultyLevelEnum = {
 
 export default defineAppConfig({
   appInfo: {
-    adminTitle: '英语AI学习系统管理后台',
-    title: '英语AI学习系统',
+    adminTitle: '英语学习系统管理后台',
+    title: '英语学习系统',
     roleEnum,
     roleEnums: [
       {
         label: '教师',
         value: roleEnum.teacher
-      },
-      {
-        label: '助教',
-        value: roleEnum.assistant
       },
       {
         label: '管理员',
@@ -56,10 +51,6 @@ export default defineAppConfig({
       {
         label: '教师',
         value: 'teacher'
-      },
-      {
-        label: '助教',
-        value: 'assistant'
       },
       {
         label: '管理员',

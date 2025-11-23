@@ -3,17 +3,25 @@ import { sub } from 'date-fns'
 import type { DropdownMenuItem } from '@nuxt/ui'
 import type { Period, Range } from '~/types'
 
+definePageMeta({
+  middleware: ['auth']
+})
+
 const { isNotificationsSlideoverOpen } = useDashboard()
 
-const items = [[{
-  label: 'New mail',
-  icon: 'i-lucide-send',
-  to: '/inbox'
-}, {
-  label: 'New customer',
-  icon: 'i-lucide-user-plus',
-  to: '/customers'
-}]] satisfies DropdownMenuItem[][]
+const items = [
+  [
+    {
+      label: 'New mail',
+      icon: 'i-lucide-send',
+      to: '/admin/inbox'
+    }, {
+      label: 'New customer',
+      icon: 'i-lucide-user-plus',
+      to: '/admin/customers'
+    }
+  ]
+] satisfies DropdownMenuItem[][]
 
 const range = shallowRef<Range>({
   start: sub(new Date(), { days: 14 }),
