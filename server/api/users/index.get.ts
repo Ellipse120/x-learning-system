@@ -4,9 +4,8 @@ import { users } from '~~/server/database/schema'
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const db = useDb()
-
   const page = Number(query.page) || 1
-  const limit = Math.min(Number(query.limt) || 20, 100)
+  const limit = Number(query.limit) || 20
   const offset = (page - 1) * limit
   const search = query.search?.toString().trim()
 

@@ -8,11 +8,27 @@ const appConfig = useAppConfig()
 const { $api } = useNuxtApp()
 
 const UButton = resolveComponent('UButton')
-// const users = ref([
-//   { id: 1, name: 'John Doe', email: 'john@example.com' },
-//   { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
-// ])
-const { data, refresh, pending } = await useAPI('/users')
+
+const page = ref(1)
+const limit = ref(10)
+const total = ref(0)
+const totalPages = ref(0)
+const search = ref('')
+
+const { data, refresh, pending } = await useAPI('/users', {
+  query: {
+    search: search,
+    page: page,
+    limit: limit
+  }
+})
+
+if (data.value.pagination) {
+  page.value = data.value.pagination.page
+  limit.value = data.value.pagination.limit
+  total.value = data.value.pagination.total
+  totalPages.value = data.value.pagination.totalPages
+}
 
 const roleItems = appConfig.appInfo.roleItems
 const columns = [
@@ -75,7 +91,16 @@ async function openModal(user = { ...defaultUser }) {
   toggleModalOpen(true)
 }
 
-function batchImport() {
+async function batchImport() {
+  await $api('/seed/users', {
+    method: 'post',
+    body: {
+      count: 10,
+      role: 'student'
+    }
+  })
+
+  await refresh()
   toast.add({ title: 'todo...' })
 }
 
@@ -144,8 +169,26 @@ const handleResetPassword = async (row) => {
 <template>
   <div>
     <div class="flex gap-4">
+      <UInput
+        v-model.lazy="search"
+        placeholder="搜索邮箱或姓名..."
+        :trailing="false"
+        class="max-w-md"
+      >
+        <template v-if="search?.length" #trailing>
+          <UButton
+            color="neutral"
+            variant="link"
+            size="sm"
+            icon="i-lucide-circle-x"
+            aria-label="Clear input"
+            @click="search = ''"
+          />
+        </template>
+      </UInput>
+
       <UButton
-        label="刷新"
+        label="查询"
         color="secondary"
         @click="refresh()"
       />
@@ -154,7 +197,7 @@ const handleResetPassword = async (row) => {
         @click="openModal()"
       />
       <UButton
-        label="导入"
+        label="Seed导入"
         @click="batchImport()"
       />
       <UButton
@@ -168,6 +211,7 @@ const handleResetPassword = async (row) => {
       :data="data.list"
       :columns="columns"
       :loading="pending"
+      empty="暂无数据"
     >
       <template #actions-cell="{ row }">
         <div class="space-x-2">
@@ -200,6 +244,15 @@ const handleResetPassword = async (row) => {
         </div>
       </template>
     </UTable>
+
+    <div class="flex justify-center border-t border-default pt-4">
+      <UPagination
+        v-model:page="page"
+        :page-count="totalPages"
+        :items-per-page="limit"
+        :total="total"
+      />
+    </div>
 
     <UModal v-model:open="modalOpen">
       <template #header>

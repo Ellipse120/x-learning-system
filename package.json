@@ -15,6 +15,7 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.1.0",
     "@iconify-json/lucide": "^1.2.73",
     "@iconify-json/simple-icons": "^1.2.58",
     "@nuxt/ui": "^4.2.0",
