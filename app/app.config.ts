@@ -88,7 +88,8 @@ export default defineAppConfig({
     booleanOptions: [
       { label: '是', value: true },
       { label: '否', value: false }
-    ]
+    ],
+    seedUserEmailProvider: 'example.fake.com'
   },
   mockData: {
     // 模拟用户数据

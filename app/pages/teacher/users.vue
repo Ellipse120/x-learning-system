@@ -164,6 +164,18 @@ const handleResetPassword = async (row) => {
     color: 'success'
   })
 }
+
+const batchDeleteSeedUser = async () => {
+  await $api('/users/batch-delete', {
+    method: 'post',
+    body: {
+      emailPattern: `%@${appConfig.appInfo.seedUserEmailProvider}`
+    }
+  })
+
+  await refresh()
+  toast.add({ title: 'Seed数据删除成功', color: 'success' })
+}
 </script>
 
 <template>
@@ -199,6 +211,10 @@ const handleResetPassword = async (row) => {
       <UButton
         label="Seed导入"
         @click="batchImport()"
+      />
+      <UButton
+        label="删除Seed数据"
+        @click="batchDeleteSeedUser()"
       />
       <UButton
         label="返回"

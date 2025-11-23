@@ -12,10 +12,11 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, seedSchema.parse)
   const db = useDb()
   const { count = 10, role = 'student' } = body
+  const appConfig = useAppConfig()
 
   const fakeUsers = Array.from({ length: count }).map(() => {
     const username = faker.person.fullName()
-    const email = faker.internet.email({ provider: 'example.fake.com' }).toLowerCase()
+    const email = faker.internet.email({ provider: appConfig.appInfo.seedUserEmailProvider }).toLowerCase()
     return {
       username,
       email,
