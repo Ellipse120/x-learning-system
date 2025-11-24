@@ -72,7 +72,7 @@ export default defineEventHandler(async (event) => {
 
   return {
     success: true,
-    summary: {
+    data: {
       totalRequested: count,
       existing: count - newFakeUsers.length,
       created: createdUsers.length

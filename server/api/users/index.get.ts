@@ -42,11 +42,10 @@ export default defineEventHandler(async (event) => {
   return {
     success: true,
     list,
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit)
-    }
+    page,
+    limit,
+    total: Number(total),
+    totalPages: Math.ceil(total / limit)
+
   }
 })

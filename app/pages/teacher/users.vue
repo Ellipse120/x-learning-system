@@ -23,12 +23,9 @@ const { data, refresh, pending } = await useAPI('/users', {
   }
 })
 
-if (data.value.pagination) {
-  page.value = data.value.pagination.page
-  limit.value = data.value.pagination.limit
-  total.value = data.value.pagination.total
-  totalPages.value = data.value.pagination.totalPages
-}
+page.value = data.value?.page
+total.value = computed(() => data.value?.total || 0)
+totalPages.value = computed(() => data.value?.totalPages || 0)
 
 const roleItems = appConfig.appInfo.roleItems
 const columns = [
@@ -91,19 +88,6 @@ async function openModal(user = { ...defaultUser }) {
   toggleModalOpen(true)
 }
 
-async function batchImport() {
-  await $api('/seed/users', {
-    method: 'post',
-    body: {
-      count: 10,
-      role: 'student'
-    }
-  })
-
-  await refresh()
-  toast.add({ title: 'todo...' })
-}
-
 function goBack() {
   navigateTo('/teacher?tab=student')
 }
@@ -146,6 +130,7 @@ const confirmDelete = async () => {
   await $api(`users/${model.value.id}`, {
     method: 'delete'
   })
+
   await refresh()
   toast.add({
     title: '删除成功',
@@ -165,6 +150,20 @@ const handleResetPassword = async (row) => {
   })
 }
 
+async function seedMockUsers() {
+  const { data } = await $api('/seed/users', {
+    method: 'post',
+    body: {
+      count: 10,
+      role: 'student'
+    }
+  })
+
+  page.value = 1
+  await refresh()
+  toast.add({ title: `添加${data.created}个模拟用户` })
+}
+
 const batchDeleteSeedUser = async () => {
   await $api('/users/batch-delete', {
     method: 'post',
@@ -173,6 +172,7 @@ const batchDeleteSeedUser = async () => {
     }
   })
 
+  page.value = 1
   await refresh()
   toast.add({ title: 'Seed数据删除成功', color: 'success' })
 }
@@ -209,11 +209,15 @@ const batchDeleteSeedUser = async () => {
         @click="openModal()"
       />
       <UButton
-        label="Seed导入"
-        @click="batchImport()"
+        label="Seed模拟用户"
+        variant="subtle"
+        color="error"
+        @click="seedMockUsers()"
       />
       <UButton
         label="删除Seed数据"
+        variant="subtle"
+        color="error"
         @click="batchDeleteSeedUser()"
       />
       <UButton
@@ -224,7 +228,7 @@ const batchDeleteSeedUser = async () => {
     </div>
 
     <UTable
-      :data="data.list"
+      :data="data?.list"
       :columns="columns"
       :loading="pending"
       empty="暂无数据"
@@ -267,6 +271,7 @@ const batchDeleteSeedUser = async () => {
         :page-count="totalPages"
         :items-per-page="limit"
         :total="total"
+        active-variant="subtle"
       />
     </div>
 
