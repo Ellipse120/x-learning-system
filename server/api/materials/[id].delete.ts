@@ -3,12 +3,12 @@ import { materials } from '~~/server/database/schema'
 
 export default defineEventHandler(async (event) => {
   const id = Number(getRouterParam(event, 'id'))
-  const { user } = await getUserSession(event)
+  const { user } = await requireUserSession(event)
   const db = useDb()
 
-  const whereClause = user.role === 'admin'
+  const whereClause = user?.role === 'admin'
     ? eq(materials.id, id)
-    : and(eq(materials.id, id), eq(materials.createdBy, user.id))
+    : and(eq(materials.id, id), eq(materials.createdBy, Number(user.id)))
 
   const deletedMaterial = await db
     .delete(materials)

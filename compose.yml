@@ -1,10 +1,9 @@
 version: '3.9'
 
 services:
-  # Nuxt 4 应用（官方推荐的 nitro + oxc 超快构建）
   app:
     image: node:22-alpine
-    container_name: nuxt4-app
+    container_name: x-learning-system
     working_dir: /app
     ports:
       - "3000:3000"
@@ -25,8 +24,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      migrate:
-        condition: service_completed_successfully
+
     restart: unless-stopped
     networks:
       - nuxt-network

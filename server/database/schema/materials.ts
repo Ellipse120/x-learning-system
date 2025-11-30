@@ -1,5 +1,5 @@
 // server/database/schema/materials.ts
-import { pgTable, serial, text, timestamp, integer, boolean, jsonb, pgEnum, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, serial, text, timestamp, integer, boolean, pgEnum, varchar } from 'drizzle-orm/pg-core'
 import { users } from './users'
 
 export const materialTypeEnum = pgEnum('material_type', [
@@ -12,7 +12,7 @@ export const materialTypeEnum = pgEnum('material_type', [
 
 export const materials = pgTable('materials', {
   id: serial('id').primaryKey(),
-  title: text('title').notNull(), // 资料标题，如 "Unit 1 Words"
+  title: text('title'), // 资料标题，如 "Unit 1 Words"
   type: materialTypeEnum('type').notNull().default('word'),
   category: varchar('category', { length: 100 }).default('uncategorized'), // 资料分类，如 "英语", "数学" 等
 
@@ -24,6 +24,7 @@ export const materials = pgTable('materials', {
   example: text('example'), // 示例句子
 
   // 通用内容（文章、长句等）
+  difficulty: text('difficulty'),
   content: text('content'), // 完整文本内容
   audioUrl: text('audio_url'), // 发音音频（可选）
   imageUrl: text('image_url'), // 配图（可选）

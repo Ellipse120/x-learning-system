@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import type { User } from '~~/shared/types'
-
 const appConfig = useAppConfig()
 const { $api } = useNuxtApp()
-const { user, clear } = useUserSession()
+const { clear } = useUserSession()
 
 const onLogout = async () => {
   await $api('/auth/logout', {
@@ -26,9 +24,9 @@ const onLogout = async () => {
       </template>
 
       <template #right>
-        <AuthState v-slot="{ loggedIn }">
+        <AuthState v-slot="{ loggedIn, user }">
           <div class="flex items-center space-x-4">
-            <span class="text-gray-700 dark:text-white">欢迎回来，{{ (user as User)?.username }}</span>
+            <span class="text-gray-700 dark:text-white">欢迎回来，{{ user?.username }}</span>
           </div>
 
           <UColorModeButton />

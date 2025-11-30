@@ -1,13 +1,13 @@
 // 模拟数据类型定义
 export interface User {
-  id: string
+  id: number
   username: string
   role: number | 'teacher' | 'student'
   email: string
 }
 
 export interface LearningMaterial {
-  id: string
+  id: number
   type: string
   content: string
   translation: string
@@ -19,26 +19,26 @@ export interface LearningMaterial {
 }
 
 export interface LearningPlan {
-  id: string
+  id: number
   title: string
   description: string
   materialIds: string[]
-  studentId: string
+  studentId: number
   startDate: string
   endDate: string
 }
 
 export interface StudyRecord {
-  id: string
-  studentId: string
-  materialId: string
+  id: number
+  studentId: number
+  materialId: number
   studiedAt: string
   correct: boolean
   timeSpent: number
 }
 
 export interface StudentProgress {
-  studentId: string
+  studentId: number
   totalStudied: number
   correctAnswers: number
   currentStreak: number

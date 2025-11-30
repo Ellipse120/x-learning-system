@@ -23,9 +23,9 @@ const wordTypeEnum = {
 }
 
 const difficultyLevelEnum = {
-  easy: 0,
-  medium: 1,
-  hard: 2
+  beginner: 'beginner',
+  intermediate: 'intermediate',
+  advanced: 'advanced'
 }
 
 export default defineAppConfig({

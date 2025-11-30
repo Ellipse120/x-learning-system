@@ -1,15 +1,15 @@
 import { eq } from 'drizzle-orm'
-import { materials } from '~~/server/database/schema'
+import { materials, users } from '~~/server/database/schema'
 
 export default defineEventHandler(async (event) => {
   const id = Number(getRouterParam(event, 'id'))
-  const { user } = await getUserSession(event)
+  const { user } = await requireUserSession(event)
   const db = useDb()
 
   const material = await db
     .select()
     .from(materials)
-    .leftJoin(user, eq(materials.createdBy, user?.id))
+    .leftJoin(users, eq(materials.createdBy, Number(user?.id)))
     .where(eq(materials.id, id))
     .then(r => r[0])
 
@@ -23,6 +23,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     success: true,
-    data: material
+    data: material.materials
   }
 })

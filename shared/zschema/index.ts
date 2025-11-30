@@ -26,11 +26,11 @@ enum difficultyLevelEnum {
 export const userLoginSchema = z.object({
   email: z.email().trim(),
   role: z.enum(roleEnum),
-  password: z.string().trim().optional()
+  password: z.string().trim().nullish()
 })
 
 export const materialSchema = z.object({
-  id: z.string().optional(),
+  id: z.string().nullish(),
   type: z.enum(meterialTypeEnum),
   content: z.string().min(1, '必填'),
   translation: z.string().min(1, '必填'),
@@ -38,7 +38,7 @@ export const materialSchema = z.object({
 })
 
 export const learningPlanSchema = z.object({
-  id: z.string().optional(),
+  id: z.string().nullish(),
   title: z.string().min(1, '必填'),
   description: z.string().min(1, '必填'),
   materialIds: z.object({
@@ -56,14 +56,14 @@ export const learningPlanSchema = z.object({
 })
 
 export const userLoginSchemaZ = z.object({
-  username: z.string().trim().optional(),
+  username: z.string().trim().nullish(),
   email: z.email('无效的邮箱地址'),
   password: z.string().min(8).regex(/[A-Z]/, '必须包含大写字母').regex(/[0-9]/, '必须包含数字'),
   role: z.enum(roleEnum)
 })
 
 export const userRegisterSchemaZ = z.object({
-  username: z.string().trim().optional(),
+  username: z.string().trim().nullish(),
   email: z.email('无效的邮箱地址'),
   password: z.string().min(8).regex(/[A-Z]/, '必须包含大写字母').regex(/[0-9]/, '必须包含数字'),
   role: z.enum(roleEnum)
@@ -71,22 +71,23 @@ export const userRegisterSchemaZ = z.object({
 
 export const materialSchemaZ = z.object({
   id: z.number().optional(),
-  title: z.string().min(1, '资料标题不能为空'),
+  title: z.string().nullish(),
   type: z.enum(['word', 'phrase', 'sentence', 'article', 'other']).default('word'),
-  category: z.string().max(100).optional(),
+  category: z.string().max(100).nullish(),
 
-  word: z.string().optional(),
-  phoneticUk: z.string().optional(),
-  phoneticUs: z.string().optional(),
-  translation: z.string().optional(),
-  example: z.string().optional(),
+  word: z.string().nullish(),
+  phoneticUk: z.string().nullish(),
+  phoneticUs: z.string().nullish(),
+  translation: z.string().nullish(),
+  example: z.string().nullish(),
 
-  content: z.string().optional(),
-  audioUrl: z.url().optional(),
-  imageUrl: z.url().optional(),
+  content: z.string().nullish(),
+  difficulty: z.string().nullish(),
+  audioUrl: z.url().nullish(),
+  imageUrl: z.url().nullish(),
 
-  createdBy: z.number().optional(),
-  isPublic: z.boolean().optional()
+  createdBy: z.number().nullish(),
+  isPublic: z.boolean().nullish()
 })
 
 export type UserLogin = z.infer<typeof userLoginSchema>

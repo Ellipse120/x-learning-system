@@ -9,9 +9,14 @@ definePageMeta({
 
 const appConfig = useAppConfig()
 const { user } = useUserSession()
+const { $api } = useNuxtApp()
 const route = useRoute()
+
+const { data, refresh, pending } = await useAPI('/materials')
+const learningMaterials = computed(() => data.value?.list || [])
+
 const newMaterial = reactive<Partial<LearningMaterial>>({
-  id: '',
+  id: undefined,
   type: 'word',
   content: '',
   translation: '',
@@ -37,27 +42,21 @@ const getTypeIcon = (type: string) => {
 }
 const toast = useToast()
 
-function handleAddMaterial() {
+async function handleAddMaterial() {
+  await $api('/materials', {
+    method: 'POST',
+    body: newMaterial
+  })
+
+  await refresh()
   toast.add({
     title: 'Success',
     description: '添加成功',
     color: 'success'
   })
-  learningMaterials.value = [
-    {
-      id: Date.now().toString(),
-      type: newMaterial.type || 'word',
-      content: newMaterial.content || '',
-      translation: newMaterial.translation || '',
-      difficulty: newMaterial.difficulty || 'beginner',
-      createdAt: new Date().toISOString().split('T')[0],
-      createdBy: user.value?.id || ''
-    },
-    ...learningMaterials.value
-  ]
 }
-const editingMaterial = ref<LearningMaterial>({
-  id: '',
+const editingMaterial = ref({
+  id: undefined,
   type: 'word',
   content: '',
   translation: '',
@@ -65,32 +64,49 @@ const editingMaterial = ref<LearningMaterial>({
   createdAt: '',
   createdBy: ''
 })
-const handleEdit = (item: LearningMaterial) => {
-  editingMaterial.value = { ...item }
-}
-const [modalState, toggleModalState] = useToggle() // 控制编辑弹窗
-const saveEditingMaterial = () => {
-  const index = learningMaterials.value.findIndex(m => m.id === editingMaterial.value.id)
-  if (index !== -1) {
-    learningMaterials.value[index] = { ...editingMaterial.value }
-    toast.add({
-      title: 'Success',
-      description: '修改成功',
-      color: 'success'
-    })
-    toggleModalState()
+
+const handleEdit = async (item) => {
+  const { data } = await $api(`/materials/${item.id}`)
+
+  if (data) {
+    editingMaterial.value = { ...data }
+    toggleModalState(true)
   }
 }
 
-const handleDelete = (item: LearningMaterial) => {
-  learningMaterials.value = learningMaterials.value.filter(m => m.id !== item.id)
+const [modalState, toggleModalState] = useToggle() // 控制编辑弹窗
+
+const saveEditingMaterial = async () => {
+  const { data } = await $api(`/materials/${editingMaterial.value.id}`, {
+    method: 'put',
+    body: editingMaterial.value
+  })
+
+  toast.add({
+    title: '修改成功',
+    color: 'success'
+  })
+  await refresh()
+  toggleModalState()
+}
+
+const handleDelete = async (item: LearningMaterial) => {
+  await $api(`materials/${item.id}`, {
+    method: 'delete'
+  })
+
+  await refresh()
+  toast.add({
+    title: '删除成功',
+    color: 'success'
+  })
 }
 
 // 统计数据
 const students = ref(appConfig.mockData.mockUsers.filter(u => u.role === 'student'))
-const learningMaterials = ref(appConfig.mockData.mockLearningMaterials)
+// const learningMaterials = ref(appConfig.mockData.mockLearningMaterials)
 const studentProgressList = ref(appConfig.mockData.mockStudentProgress)
-const totalMaterials = learningMaterials.value.length
+const totalMaterials = computed(() => learningMaterials.value?.length || 0)
 const totalStudents = students.value.length
 
 const activeStudents = studentProgressList.value.filter((p) => {
@@ -105,7 +121,7 @@ const averageAccuracy = studentProgressList.value.length > 0
   ? Math.round(studentProgressList.value.reduce((acc, p) => acc + (p.correctAnswers / p.totalStudied * 100), 0) / studentProgressList.value.length)
   : 0
 
-const activeTab = ref(route.query.tab || 'account')
+const activeTab = ref<string>(route.query.tab as string || 'account')
 const items = [
   {
     label: '学习资料',
@@ -171,7 +187,7 @@ const materialCountByDifficulty = computed(() => {
 
 const calcPercentage = (value) => {
   const total = totalMaterials
-  return total > 0 ? Math.round((value / total) * 100) : 0
+  return total.value > 0 ? Math.round((value / total.value) * 100) : 0
 }
 </script>
 
@@ -285,7 +301,6 @@ const calcPercentage = (value) => {
             </template>
 
             <UForm
-              :schema="materialSchemaZ"
               :state="newMaterial"
               class="space-y-4 flex flex-col w-full"
               @submit="handleAddMaterial"
@@ -335,6 +350,7 @@ const calcPercentage = (value) => {
                 type="submit"
                 icon="i-lucide-plus"
                 class="w-full justify-center"
+                :loading="pending"
                 label="添加资料"
               />
             </UForm>
@@ -342,9 +358,18 @@ const calcPercentage = (value) => {
 
           <UCard>
             <template #header>
-              <h3 class="text-base font-semibold leading-6">
-                学习资料列表
-              </h3>
+              <div class="flex items-center gap-2">
+                <h3 class="text-base font-semibold leading-6">
+                  学习资料列表
+                </h3>
+                <UIcon
+                  name="i-lucide-refresh-ccw"
+                  class="size-5 cursor-pointer"
+                  :class="{ 'animate-spin': pending }"
+                  title="点击刷新学习资料列表"
+                  @click="refresh()"
+                />
+              </div>
             </template>
 
             <div class="space-y-4">

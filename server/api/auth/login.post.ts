@@ -11,22 +11,28 @@ export default defineEventHandler(async (event) => {
     .where(eq(users.email, body.email))
     .then(r => r[0])
 
-  await verifyPassword(user.passwordHash, body.password!)
+  if (await verifyPassword(user.passwordHash, body.password!)) {
+    await setUserSession(event, {
+      user,
+      loggedInAt: new Date()
+    })
 
-  await setUserSession(event, {
-    user,
-    loggedInAt: new Date()
-  })
-  const path = user?.role === 'admin' ? '/' : user?.role === 'teacher' ? '/teacher' : '/student'
+    const path = user?.role === 'admin' ? '/' : user?.role === 'teacher' ? '/teacher' : '/student'
 
-  return {
-    success: true,
-    message: '登录成功',
-    data: {
-      username: user.username,
-      email: user.email,
-      role: user.role,
-      path
+    return {
+      success: true,
+      message: '登录成功',
+      data: {
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        path
+      }
     }
+  } else {
+    throw createError({
+      statusCode: 403,
+      message: '验证失败，用户名或密码不匹配'
+    })
   }
 })

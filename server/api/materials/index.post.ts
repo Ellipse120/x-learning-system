@@ -4,13 +4,13 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, materialSchemaZ.parse)
 
   const db = useDb()
-  const { user } = await getUserSession(event)
+  const { user } = await requireUserSession(event)
 
   const newMaterial = await db
     .insert(materials)
     .values({
       ...body,
-      createdBy: user?.id
+      createdBy: Number(user?.id)
     })
     .returning()
     .then(r => r[0])
