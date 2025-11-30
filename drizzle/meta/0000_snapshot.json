@@ -1,5 +1,5 @@
 {
-  "id": "26db2686-0628-4857-88f1-b7e7196ec4b7",
+  "id": "82797fcd-0e9e-45f5-90bc-135d637fb44d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -69,29 +69,7 @@
           "default": "now()"
         }
       },
-      "indexes": {
-        "daily_records_user_date_idx": {
-          "name": "daily_records_user_date_idx",
-          "columns": [
-            {
-              "expression": "user_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            },
-            {
-              "expression": "date",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "daily_records_user_id_users_id_fk": {
           "name": "daily_records_user_id_users_id_fk",
@@ -125,6 +103,12 @@
         },
         "username": {
           "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -164,23 +148,7 @@
           "default": "now()"
         }
       },
-      "indexes": {
-        "users_username_idx": {
-          "name": "users_username_idx",
-          "columns": [
-            {
-              "expression": "username",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": true,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -291,7 +259,7 @@
           "name": "title",
           "type": "text",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "type": {
           "name": "type",
@@ -300,6 +268,13 @@
           "primaryKey": false,
           "notNull": true,
           "default": "'word'"
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'uncategorized'"
         },
         "word": {
           "name": "word",
@@ -327,6 +302,12 @@
         },
         "example": {
           "name": "example",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "difficulty": {
+          "name": "difficulty",
           "type": "text",
           "primaryKey": false,
           "notNull": false
@@ -389,7 +370,7 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },
@@ -498,15 +479,7 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "user_progress_user_id_material_id_pk": {
-          "name": "user_progress_user_id_material_id_pk",
-          "columns": [
-            "user_id",
-            "material_id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},

@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1763660858033,
-      "tag": "0000_mushy_cable",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1763692574873,
-      "tag": "0001_optimal_mandarin",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1763739332766,
-      "tag": "0002_past_johnny_storm",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1763807964523,
-      "tag": "0003_dashing_the_anarchist",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1764497470646,
-      "tag": "0004_adorable_dracula",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1764500095447,
-      "tag": "0005_unique_prodigy",
+      "when": 1764514084482,
+      "tag": "0000_overconfident_christian_walker",
       "breakpoints": true
     }
   ]

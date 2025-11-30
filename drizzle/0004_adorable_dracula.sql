@@ -1,1 +1,0 @@
-ALTER TABLE "materials" ALTER COLUMN "title" DROP NOT NULL;

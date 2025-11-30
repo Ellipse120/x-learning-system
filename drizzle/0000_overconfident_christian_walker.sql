@@ -14,7 +14,8 @@ CREATE TABLE "daily_records" (
 --> statement-breakpoint
 CREATE TABLE "users" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"username" text NOT NULL,
+	"username" text,
+	"email" text NOT NULL,
 	"password_hash" text NOT NULL,
 	"role" "role" DEFAULT 'student' NOT NULL,
 	"avatar" text,
@@ -35,13 +36,15 @@ CREATE TABLE "profiles" (
 --> statement-breakpoint
 CREATE TABLE "materials" (
 	"id" serial PRIMARY KEY NOT NULL,
-	"title" text NOT NULL,
+	"title" text,
 	"type" "material_type" DEFAULT 'word' NOT NULL,
+	"category" varchar(100) DEFAULT 'uncategorized',
 	"word" text,
 	"phonetic_uk" text,
 	"phonetic_us" text,
 	"translation" text,
 	"example" text,
+	"difficulty" text,
 	"content" text,
 	"audio_url" text,
 	"image_url" text,
@@ -61,15 +64,12 @@ CREATE TABLE "user_progress" (
 	"review_count" integer DEFAULT 0,
 	"notes" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "user_progress_user_id_material_id_pk" PRIMARY KEY("user_id","material_id")
+	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "daily_records" ADD CONSTRAINT "daily_records_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "profiles" ADD CONSTRAINT "profiles_teacher_id_users_id_fk" FOREIGN KEY ("teacher_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "materials" ADD CONSTRAINT "materials_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "materials" ADD CONSTRAINT "materials_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_material_id_materials_id_fk" FOREIGN KEY ("material_id") REFERENCES "public"."materials"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-CREATE UNIQUE INDEX "daily_records_user_date_idx" ON "daily_records" USING btree ("user_id","date");--> statement-breakpoint
-CREATE UNIQUE INDEX "users_username_idx" ON "users" USING btree ("username");
+ALTER TABLE "user_progress" ADD CONSTRAINT "user_progress_material_id_materials_id_fk" FOREIGN KEY ("material_id") REFERENCES "public"."materials"("id") ON DELETE cascade ON UPDATE no action;
