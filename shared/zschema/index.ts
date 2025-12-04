@@ -92,7 +92,6 @@ export const materialSchemaZ = z.object({
 
 export type UserLogin = z.infer<typeof userLoginSchema>
 export type Material = z.infer<typeof materialSchema>
-export type LearningPlan = z.infer<typeof learningPlanSchema>
 export type UserRegisterZ = z.infer<typeof userRegisterSchemaZ>
 export type UserLoginZ = z.infer<typeof userLoginSchemaZ>
 export type MaterialZ = z.infer<typeof materialSchemaZ>

@@ -89,7 +89,7 @@ async function openModal(user = { ...defaultUser }) {
 }
 
 function goBack() {
-  navigateTo('/teacher?tab=student')
+  navigateTo('/teacher')
 }
 
 async function saveUser(user) {
@@ -181,10 +181,10 @@ const batchDeleteSeedUser = async () => {
 <template>
   <div>
     <h3 class="text-base font-semibold leading-6">
-      用户管理
+      学习资料
     </h3>
 
-    <div class="flex gap-4">
+    <div class="flex gap-4 my-2">
       <UInput
         v-model.lazy="search"
         placeholder="搜索邮箱或姓名..."

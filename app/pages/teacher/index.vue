@@ -8,7 +8,6 @@ definePageMeta({
 })
 
 const appConfig = useAppConfig()
-const { user } = useUserSession()
 const { $api } = useNuxtApp()
 const route = useRoute()
 
@@ -358,7 +357,7 @@ const calcPercentage = (value) => {
 
           <UCard>
             <template #header>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-4">
                 <h3 class="text-base font-semibold leading-6">
                   学习资料列表
                 </h3>
@@ -369,6 +368,17 @@ const calcPercentage = (value) => {
                   title="点击刷新学习资料列表"
                   @click="refresh()"
                 />
+                <UTooltip text="学习计划">
+                  <NuxtLink
+                    class="flex items-center justify-center"
+                    to="/teacher/learning-plan"
+                  >
+                    <UIcon
+                      class="size-5 cursor-pointer"
+                      name="i-lucide-calendar-days"
+                    />
+                  </NuxtLink>
+                </UTooltip>
               </div>
             </template>
 

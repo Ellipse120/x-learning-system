@@ -5,7 +5,6 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const db = useDb()
   const { user } = await requireUserSession(event)
-  console.log(user)
 
   const filters = []
 

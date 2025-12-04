@@ -76,13 +76,13 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
   })
 
   if (success) {
+    await navigateTo(data.path)
+
     toast.add({
       title: '登录成功',
       description: `欢迎回来！${data.username}`,
       color: 'success'
     })
-
-    await navigateTo(data.path)
   }
 }
 </script>
