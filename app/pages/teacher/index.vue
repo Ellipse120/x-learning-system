@@ -371,7 +371,7 @@ const calcPercentage = (value) => {
                 <UTooltip text="学习计划">
                   <NuxtLink
                     class="flex items-center justify-center"
-                    to="/teacher/learning-plan"
+                    to="/teacher/daily-records"
                   >
                     <UIcon
                       class="size-5 cursor-pointer"

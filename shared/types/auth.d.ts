@@ -7,6 +7,9 @@ declare module '#auth-utils' {
   }
 
   interface UserSession {
+    id: number
+    username: string
+    email: string
   }
 
   interface SecureSessionData {

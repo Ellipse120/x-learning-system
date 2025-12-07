@@ -12,20 +12,23 @@ export default defineEventHandler(async (event) => {
     .then(r => r[0])
 
   if (await verifyPassword(user.passwordHash, body.password!)) {
-    await setUserSession(event, {
-      user,
-      loggedInAt: new Date()
-    })
+    const { passwordHash, ...rest } = user
+
+    await setUserSession(event,
+      {
+        user: rest,
+        loggedInAt: new Date()
+      },
+      {
+        maxAge: 60 * 60 * 1000
+      }
+    )
 
     const path = user?.role === 'admin' ? '/' : user?.role === 'teacher' ? '/teacher' : '/student'
 
     return {
       success: true,
-      message: '登录成功',
       data: {
-        username: user.username,
-        email: user.email,
-        role: user.role,
         path
       }
     }

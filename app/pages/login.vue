@@ -7,8 +7,8 @@ definePageMeta({
 })
 
 useSeoMeta({
-  title: 'Login',
-  description: 'Login to your account to continue'
+  title: '登录',
+  description: '使用邮箱账号登录以继续'
 })
 
 const toast = useToast()
@@ -59,9 +59,11 @@ type Schema = z.output<typeof schema>
 
 const role = ref('teacher')
 const { $api } = useNuxtApp()
+const [loading, toggleLoading] = useToggle(false)
 
 async function onSubmit(payload: FormSubmitEvent<Schema>) {
-  const { data, success } = await $api('/auth/login', {
+  toggleLoading(true)
+  const { data } = await $api('/auth/login', {
     method: 'POST',
     body: {
       ...payload.data,
@@ -73,17 +75,20 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
       description: err?.data?.message || '请稍后再试',
       color: 'error'
     })
+  }).finally(() => {
+    toggleLoading(false)
   })
 
-  if (success) {
-    await navigateTo(data.path)
+  const { user, fetch: fetchUserSession } = useUserSession()
 
-    toast.add({
-      title: '登录成功',
-      description: `欢迎回来！${data.username}`,
-      color: 'success'
-    })
-  }
+  toast.add({
+    title: '登录成功',
+    description: `欢迎回来！${user.value?.username}`,
+    color: 'success'
+  })
+
+  await fetchUserSession()
+  await navigateTo(data.path)
 }
 </script>
 
@@ -97,6 +102,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
       block: true
     }"
     icon="i-lucide-book-open-text"
+    :loading="loading"
     @submit="onSubmit"
   >
     <template #header>

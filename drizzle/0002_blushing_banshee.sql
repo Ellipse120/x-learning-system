@@ -1,0 +1,2 @@
+ALTER TABLE "daily_records" ADD COLUMN "created_by" integer NOT NULL;--> statement-breakpoint
+ALTER TABLE "daily_records" ADD CONSTRAINT "daily_records_created_by_users_id_fk" FOREIGN KEY ("created_by") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;

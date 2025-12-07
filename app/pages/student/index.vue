@@ -1,15 +1,16 @@
 <script setup lang="ts">
 definePageMeta({
   layout: 'student'
-  // middleware: ['auth']
 })
 
-const { user }: { user: User } = useUserSession()
+const { user } = useUserSession()
 const appConfig = useAppConfig()
-const learningMaterials = ref(appConfig.mockData.mockLearningMaterials)
 const studyRecords = ref(appConfig.mockData.mockStudyRecords.filter(r => r.studentId === user.value.id) || [])
 const studyProgress = ref(appConfig.mockData.mockStudentProgress)
-const totalMaterials = ref(appConfig.mockData.mockLearningMaterials)
+
+const { data: materials } = await useAPI('/materials')
+const learningMaterials = computed(() => materials.value?.list)
+
 const studentProgress = ref(appConfig.mockData.mockStudentProgress.find(p => p.studentId === user.value.id) || {
   studentId: user.value!.id,
   totalStudied: 0,
@@ -19,7 +20,7 @@ const studentProgress = ref(appConfig.mockData.mockStudentProgress.find(p => p.s
   level: 'beginner'
 })
 const studyMode = ref<'study' | 'review' | 'quiz'>('study')
-const currentMaterial = ref<LearningMaterial>(null)
+const currentMaterial = ref<LearningMaterial>()
 // const showAnswer = ref(false)
 const studyStartTime = ref()
 // const dailyCheckedIn = ref(false)

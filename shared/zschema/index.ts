@@ -90,6 +90,22 @@ export const materialSchemaZ = z.object({
   isPublic: z.boolean().nullish()
 })
 
+export const dailyRecordsZ = z.object({
+  id: z.number().optional(),
+  userId: z.number(),
+  materialId: z.number(),
+  date: z.string(),
+  learnedCound: z.number().default(0),
+  status: z.string(),
+  notes: z.string().optional(),
+  reviewCount: z.number().default(0),
+  streak: z.number().default(0),
+  isChecked: z.boolean().default(true),
+  createBy: z.number(),
+  createAt: z.string(),
+  updateAt: z.string().optional()
+})
+
 export type UserLogin = z.infer<typeof userLoginSchema>
 export type Material = z.infer<typeof materialSchema>
 export type UserRegisterZ = z.infer<typeof userRegisterSchemaZ>

@@ -15,6 +15,13 @@
       "when": 1764858811657,
       "tag": "0001_lame_khan",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764943713211,
+      "tag": "0002_blushing_banshee",
+      "breakpoints": true
     }
   ]
 }

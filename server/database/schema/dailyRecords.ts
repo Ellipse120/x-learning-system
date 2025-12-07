@@ -15,6 +15,7 @@ export const dailyRecords = pgTable('daily_records', {
   streak: integer('streak').default(0), // 当前连续打卡天数
   isChecked: boolean('is_checked').default(true), // 是否已打卡
 
+  createdBy: integer('created_by').notNull().references(() => users.id, { onDelete: 'cascade' }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull()
 

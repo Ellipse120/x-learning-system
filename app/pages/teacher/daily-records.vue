@@ -15,7 +15,7 @@ const total = ref(0)
 const totalPages = ref(0)
 const search = ref('')
 
-const { data, refresh, pending } = await useAPI('/users', {
+const { data, refresh, pending } = await useAPI('/daily-records', {
   query: {
     search: search,
     page: page,
@@ -34,35 +34,28 @@ const columns = [
     header: 'ID'
   },
   {
-    accessorKey: 'username',
+    accessorKey: 'userId',
     header: '用户名'
   },
   {
-    accessorKey: 'email',
-    header: '电子邮箱'
+    accessorKey: 'materialId',
+    header: '学习资料'
   },
   {
-    accessorKey: 'role',
-    header: '角色',
-    cell: ({ row }) => `${formatText(roleItems, row.getValue('role'))}`
+    accessorKey: 'date',
+    header: '打卡日期'
+  },
+  {
+    accessorKey: 'learnedCount',
+    header: '当天学习量'
+  },
+  {
+    accessorKey: 'status',
+    header: '学习状态'
   },
   {
     accessorKey: 'actions',
     header: '操作'
-    // cell: ({ row }) => {
-    //   const editBtn = h(UButton, {
-    //     color: 'success',
-    //     onClick: () => openModal(row.original)
-    //   }, () => '编辑')
-    //   const deleteBtn = h(UButton, {
-    //     color: 'warning',
-    //     onClick: () => openModal(row.original)
-    //   }, () => '删除')
-
-    //   return h('div', {
-    //     class: 'flex gap-2'
-    //   }, [editBtn, deleteBtn])
-    // }
   }
 ]
 
@@ -181,7 +174,7 @@ const batchDeleteSeedUser = async () => {
 <template>
   <div>
     <h3 class="text-base font-semibold leading-6">
-      学习资料
+      学习记录
     </h3>
 
     <div class="flex gap-4 my-2">
@@ -211,18 +204,6 @@ const batchDeleteSeedUser = async () => {
       <UButton
         label="添加"
         @click="openModal()"
-      />
-      <UButton
-        label="Seed模拟用户"
-        variant="subtle"
-        color="error"
-        @click="seedMockUsers()"
-      />
-      <UButton
-        label="删除Seed数据"
-        variant="subtle"
-        color="error"
-        @click="batchDeleteSeedUser()"
       />
       <UButton
         label="返回"
