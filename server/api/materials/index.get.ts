@@ -4,7 +4,9 @@ import { materials, users } from '~~/server/database/schema'
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const db = useDb()
-  const { user } = await requireUserSession(event)
+  const d = await getUserSession(event)
+  console.log(d, ' ==mate')
+  const { user } = await replaceUserSession(event, {})
 
   const filters = []
 

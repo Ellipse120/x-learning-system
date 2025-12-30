@@ -7,11 +7,14 @@ definePageMeta({
   // middleware: ['auth']
 })
 
+const { fetch: refreshSession } = useUserSession()
+
 const appConfig = useAppConfig()
 const { $api } = useNuxtApp()
 const route = useRoute()
 
 const { data, refresh, pending } = await useAPI('/materials')
+await refreshSession()
 const learningMaterials = computed(() => data.value?.list || [])
 
 const newMaterial = reactive<Partial<LearningMaterial>>({

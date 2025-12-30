@@ -1,16 +1,16 @@
-export default defineNuxtPlugin((nuxtApp) => {
-  const userInfo = useCookie('userInfo')
-  const userAuth = userInfo.value?.token
+export default defineNuxtPlugin(async (nuxtApp) => {
+  const { fetch: refreshSession } = useUserSession()
 
   const config = useRuntimeConfig()
   const toast = useToast()
 
   const api: typeof $fetch = $fetch.create({
     baseURL: config.public.apiUrl2 as string ?? 'http://localhost:3000/api',
-    onRequest({ options }) {
-      if (userAuth) {
-        options.headers.set('Authorization', `Bearer ${userAuth}`)
-      }
+    async onRequest({ options }) {
+      await refreshSession()
+      // if (session.value?.user) {
+      //   options.headers.set('Authorization', `Bearer ${session.value.user.username}`)
+      // }
     },
     async onResponseError({ response }) {
       // if (!response._data?.success) {
@@ -36,7 +36,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       }
 
       if (response.status === 401) {
-        console.log(response)
+        console.log(response, ' ===401')
 
         await nuxtApp.runWithContext(() => navigateTo('/login'))
       }
