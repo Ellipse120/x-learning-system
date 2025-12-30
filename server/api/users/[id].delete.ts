@@ -4,7 +4,7 @@ import { users } from '~~/server/database/schema'
 export default defineEventHandler(async (event) => {
   const id = Number(getRouterParam(event, 'id'))
   const db = useDb()
-  const { user } = await requireUserSession(event)
+  const { user } = await getUserSession(event)
 
   if (!['admin'].includes(user.role)) {
     throw createError({ statusCode: 403, message: '无权删除用户' })

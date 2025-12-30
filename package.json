@@ -27,7 +27,7 @@
     "date-fns": "^4.1.0",
     "drizzle-orm": "^0.44.7",
     "nuxt": "^4.2.2",
-    "nuxt-auth-utils": "0.5.25",
+    "nuxt-auth-utils": "0.5.26",
     "postgres": "^3.4.7",
     "vue-router": "^4.6.3",
     "zod": "^4.1.12"

@@ -2,7 +2,7 @@ import { or, sql, like, desc } from 'drizzle-orm'
 import { users } from '~~/server/database/schema'
 
 export default defineEventHandler(async (event) => {
-  await requireUserSession(event)
+  // await requireUserSession(event)
 
   const query = getQuery(event)
   const db = useDb()

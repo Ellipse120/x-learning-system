@@ -29,6 +29,8 @@ useSeoMeta({
   twitterImage: 'https://ui.nuxt.com/assets/templates/nuxt/dashboard-light.png',
   twitterCard: 'summary_large_image'
 })
+const { fetch: refreshSession } = useUserSession()
+onMounted(refreshSession)
 </script>
 
 <template>

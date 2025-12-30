@@ -1,13 +1,10 @@
 export default defineNuxtPlugin(async (nuxtApp) => {
-  const { fetch: refreshSession } = useUserSession()
-
   const config = useRuntimeConfig()
   const toast = useToast()
 
   const api: typeof $fetch = $fetch.create({
     baseURL: config.public.apiUrl2 as string ?? 'http://localhost:3000/api',
     async onRequest({ options }) {
-      await refreshSession()
       // if (session.value?.user) {
       //   options.headers.set('Authorization', `Bearer ${session.value.user.username}`)
       // }
@@ -36,8 +33,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       }
 
       if (response.status === 401) {
-        console.log(response, ' ===401')
-
         await nuxtApp.runWithContext(() => navigateTo('/login'))
       }
     }

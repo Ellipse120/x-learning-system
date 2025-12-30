@@ -24,6 +24,9 @@ export default defineEventHandler(async (event) => {
       }
     )
 
+    const session = await getUserSession(event)
+    console.log(session, ' ===login-session')
+
     const path = user?.role === 'admin' ? '/' : user?.role === 'teacher' ? '/teacher' : '/student'
 
     return {

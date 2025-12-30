@@ -4,9 +4,14 @@ import { materials, users } from '~~/server/database/schema'
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const db = useDb()
-  const d = await getUserSession(event)
-  console.log(d, ' ==mate')
-  const { user } = await replaceUserSession(event, {})
+  const { user } = await getUserSession(event)
+
+  if (!user) {
+    throw createError({
+      statusCode: 500,
+      message: '获取用户会话失败'
+    })
+  }
 
   const filters = []
 

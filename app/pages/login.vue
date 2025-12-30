@@ -79,7 +79,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     toggleLoading(false)
   })
 
-  const { user, fetch: fetchUserSession } = useUserSession()
+  const { user, fetch: refreshSession } = useUserSession()
 
   toast.add({
     title: '登录成功',
@@ -87,7 +87,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     color: 'success'
   })
 
-  await fetchUserSession()
+  await refreshSession()
   await navigateTo(data.path)
 }
 </script>
