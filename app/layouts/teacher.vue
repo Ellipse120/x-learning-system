@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const appConfig = useAppConfig()
 const { $api } = useNuxtApp()
-const { clear } = useUserSession()
 
 const onLogout = async () => {
+  const { clear } = useUserSession()
   await $api('/auth/logout', {
     method: 'POST'
   })

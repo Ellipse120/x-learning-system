@@ -81,13 +81,13 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
 
   const { user, fetch: refreshSession } = useUserSession()
 
+  await refreshSession()
+
   toast.add({
     title: '登录成功',
     description: `欢迎回来！${user.value?.username}`,
     color: 'success'
   })
-
-  await refreshSession()
   await navigateTo(data.path)
 }
 </script>

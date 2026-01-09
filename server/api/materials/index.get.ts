@@ -4,7 +4,7 @@ import { materials, users } from '~~/server/database/schema'
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const db = useDb()
-  const { user } = await getUserSession(event)
+  const { user } = await requireUserSession(event)
 
   if (!user) {
     throw createError({
@@ -63,7 +63,7 @@ export default defineEventHandler(async (event) => {
       createdAt: materials.createdAt
     })
     .from(materials)
-    .leftJoin(users, eq(materials.createdBy, Number(user?.id)))
+    .leftJoin(users, eq(materials.createdBy, users.id))
     .where(filters.length ? and(...filters) : undefined)
     .orderBy(desc(materials.createdAt))
     .limit(100)

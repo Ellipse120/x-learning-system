@@ -4,7 +4,7 @@ import { materials } from '~~/server/database/schema'
 export default defineEventHandler(async (event) => {
   const id = Number(getRouterParam(event, 'id'))
   const body = await readValidatedBody(event, materialSchemaZ.parse)
-  const { user } = await getUserSession(event)
+  const { user } = await requireUserSession(event)
   const db = useDb()
 
   const whereClause = user?.role === 'admin'

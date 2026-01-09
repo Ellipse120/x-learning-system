@@ -3,7 +3,7 @@ import { dailyRecordsZ } from '~~/shared/zschema'
 
 export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, dailyRecordsZ.parse)
-  const { user } = await getUserSession(event)
+  const { user } = await requireUserSession(event)
   const db = useDb()
 
   const [newRecord] = await db

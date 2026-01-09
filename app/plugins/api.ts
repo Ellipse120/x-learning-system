@@ -1,22 +1,20 @@
+import { parseCookies } from 'h3'
+
 export default defineNuxtPlugin(async (nuxtApp) => {
   const config = useRuntimeConfig()
   const toast = useToast()
 
   const api: typeof $fetch = $fetch.create({
-    baseURL: config.public.apiUrl2 as string ?? 'http://localhost:3000/api',
-    async onRequest({ options }) {
-      // if (session.value?.user) {
-      //   options.headers.set('Authorization', `Bearer ${session.value.user.username}`)
-      // }
+    baseURL: config.public.apiUrl as string ?? 'http://localhost:3000/api',
+    async onRequest({ request, options }) {
+      const event = useRequestEvent()
+      if (event) {
+        const cookies = parseCookies(event!)
+        const cookieString = Object.entries(cookies).map(([key, value]) => `${key}=${value}`).join(';')
+        options.headers.set('Cookie', cookieString)
+      }
     },
     async onResponseError({ response }) {
-      // if (!response._data?.success) {
-      //   toast.add({
-      //     title: response._data?.message || '未知错误!接口可能未返回信息',
-      //     color: 'error'
-      //   })
-      // }
-
       if (response._data.error) {
         let msgs
 
@@ -31,7 +29,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
           color: 'error'
         })
       }
-
+      console.log(response)
       if (response.status === 401) {
         await nuxtApp.runWithContext(() => navigateTo('/login'))
       }

@@ -49,11 +49,11 @@ async function handleAddMaterial() {
 
   await refresh()
   toast.add({
-    title: 'Success',
-    description: '添加成功',
+    title: '添加成功',
     color: 'success'
   })
 }
+
 const editingMaterial = ref({
   id: undefined,
   type: 'word',
