@@ -14,11 +14,11 @@ export default defineEventHandler(async (event) => {
     .then(r => r[0])
 
   if (!material) {
-    throw createError({ statusCode: 404, message: '学习资料不存在' })
+    throw createError({ status: 404, message: '学习资料不存在' })
   }
 
   if (user?.role === 'student' && !material.materials.isPublic) {
-    throw createError({ statusCode: 403, message: '无权访问此学习资料' })
+    throw createError({ status: 403, message: '无权访问此学习资料' })
   }
 
   return {

@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
     })
 
   if (!updatedUser) {
-    throw createError({ statusCode: 404, message: '用户不存在' })
+    throw createError({ status: 404, message: '用户不存在' })
   }
 
   return {

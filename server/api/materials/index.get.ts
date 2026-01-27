@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
   if (!user) {
     throw createError({
-      statusCode: 500,
+      status: 500,
       message: '获取用户会话失败'
     })
   }

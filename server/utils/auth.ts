@@ -4,8 +4,8 @@ export const defineAuthEventHandler = handler => defineEventHandler(async (event
 
   if (!isLoggedIn) {
     return createError({
-      statusCode: 401,
-      statusMessage: 'Unauthorized'
+      status: 401,
+      statusText: 'Unauthorized'
     })
   }
 

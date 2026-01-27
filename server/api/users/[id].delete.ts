@@ -7,11 +7,11 @@ export default defineEventHandler(async (event) => {
   const { user } = await requireUserSession(event)
 
   if (!['admin'].includes(user.role)) {
-    throw createError({ statusCode: 403, message: '无权删除用户' })
+    throw createError({ status: 403, message: '无权删除用户' })
   }
 
   if (id === user.id) {
-    throw createError({ statusCode: 403, message: '无法删除自己' })
+    throw createError({ status: 403, message: '无法删除自己' })
   }
 
   const deletedUser = await db

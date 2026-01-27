@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
     .where(eq(users.id, id))
     .then(r => r[0])
 
-  if (!user) throw createError({ statusCode: 404, message: '用户不存在' })
+  if (!user) throw createError({ status: 404, message: '用户不存在' })
 
   return {
     success: true,

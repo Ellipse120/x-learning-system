@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
     }
   } else {
     throw createError({
-      statusCode: 403,
+      status: 403,
       message: '验证失败，用户名或密码不匹配'
     })
   }

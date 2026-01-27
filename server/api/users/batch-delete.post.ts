@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
   const db = useDb()
 
   if (!ids && !emailPattern && !deleteAllStudents) {
-    throw createError({ statusCode: 400, message: '必须指定删除条件' })
+    throw createError({ status: 400, message: '必须指定删除条件' })
   }
 
   let whereClause: any

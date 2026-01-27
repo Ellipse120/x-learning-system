@@ -20,7 +20,7 @@ export default defineEventHandler(async (event) => {
     .then(r => r[0])
 
   if (existingUser) {
-    throw createError({ statusCode: 400, message: '邮箱已存在' })
+    throw createError({ status: 400, message: '邮箱已存在' })
   }
 
   const passwordHash = await hashPassword(defaultPassword)

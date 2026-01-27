@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     .then(r => r[0])
 
   if (!deletedMaterial) {
-    throw createError({ statusCode: 403, message: '学习资料不存在或无权删除' })
+    throw createError({ status: 403, message: '学习资料不存在或无权删除' })
   }
 
   return {

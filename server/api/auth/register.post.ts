@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     .limit(1)
 
   if (existingUser.length) {
-    throw createError({ statusCode: 409, message: '邮箱已被注册' })
+    throw createError({ status: 409, message: '邮箱已被注册' })
   }
 
   const passwordHash = await hashPassword(password)
