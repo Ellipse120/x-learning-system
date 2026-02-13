@@ -196,16 +196,16 @@ const calcPercentage = (value) => {
       <UCard class="flex items-center justify-start">
         <div>
           <div class="flex items-center">
-            <div class="p-2 bg-blue-100 rounded-lg flex items-center justify-center">
+            <div class="p-2 bg-blue-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
               <UIcon
                 name="i-lucide-book-open-text"
                 class="w-6 h-6 text-blue-600"
               />
             </div>
             <div class="ml-4">
-              <p class="text-sm text-gray-600">
+              <h2 class="text-sm">
                 学习资料
-              </p>
+              </h2>
               <p class="text-2xl font-bold">
                 {{ totalMaterials }}
               </p>
@@ -217,14 +217,14 @@ const calcPercentage = (value) => {
       <UCard class="flex items-center justify-start">
         <div>
           <div class="flex items-center">
-            <div class="p-2 bg-green-100 rounded-lg flex items-center justify-center">
+            <div class="p-2 bg-green-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
               <UIcon
                 name="i-lucide-users"
                 class="w-6 h-6 text-green-600"
               />
             </div>
             <div class="ml-4">
-              <p class="text-sm text-gray-600">
+              <p class="text-sm">
                 学生总数
               </p>
               <p class="text-2xl font-bold">
@@ -238,14 +238,14 @@ const calcPercentage = (value) => {
       <UCard class="flex items-center justify-start">
         <div>
           <div class="flex items-center">
-            <div class="p-2 bg-orange-100 rounded-lg flex items-center justify-center">
+            <div class="p-2 bg-orange-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
               <UIcon
                 name="i-lucide-trending-up"
                 class="w-6 h-6 text-orange-600"
               />
             </div>
             <div class="ml-4">
-              <p class="text-sm text-gray-600">
+              <p class="text-sm">
                 活跃学生
               </p>
               <p class="text-2xl font-bold">
@@ -259,14 +259,14 @@ const calcPercentage = (value) => {
       <UCard class="flex items-center justify-start">
         <div>
           <div class="flex items-center">
-            <div class="p-2 bg-purple-100 rounded-lg flex items-center justify-center">
+            <div class="p-2 bg-purple-100 dark:bg-gray-800 rounded-lg flex items-center justify-center">
               <UIcon
                 name="i-lucide-award"
                 class="w-6 h-6 text-purple-600"
               />
             </div>
             <div class="ml-4">
-              <p class="text-sm text-gray-600">
+              <p class="text-sm">
                 平均正确率
               </p>
               <p class="text-2xl font-bold">
@@ -396,7 +396,7 @@ const calcPercentage = (value) => {
                     <p class="text-lg">
                       {{ item.content }}
                     </p>
-                    <p class="text-gray-600">
+                    <p class="">
                       {{ item.translation }}
                     </p>
                     <div class="flex items-center space-x-2 mt-1">
@@ -404,7 +404,7 @@ const calcPercentage = (value) => {
                         {{ item.difficulty === 'beginner' ? '初级'
                           : item.difficulty === 'intermediate' ? '中级' : '高级' }}
                       </UBadge>
-                      <span class="text-sm text-gray-500">{{ item.createdAt }}</span>
+                      <span class="text-sm ">{{ item.createdAt }}</span>
                     </div>
                   </div>
                 </div>
