@@ -205,7 +205,7 @@ const items = computed<DropdownMenuItem[][]>(() => ([
       <UButton
         v-bind="{
           ...user,
-          avatar: userAvatar,
+          avatar: { src: userAvatar },
           label: collapsed ? undefined : user?.username,
           trailingIcon: collapsed ? undefined : 'i-lucide-chevrons-up-down'
         }"
