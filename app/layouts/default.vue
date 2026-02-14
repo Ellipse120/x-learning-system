@@ -3,6 +3,16 @@ import type { NavigationMenuItem } from '@nuxt/ui'
 
 const route = useRoute()
 const toast = useToast()
+const { $api } = useNuxtApp()
+
+const onLogout = async () => {
+  const { clear } = useUserSession()
+  await $api('/auth/logout', {
+    method: 'POST'
+  })
+  await clear()
+  await navigateTo('/login')
+}
 
 const open = ref(false)
 
@@ -35,8 +45,13 @@ const links = [
     },
     {
       label: 'Teacher',
-      icon: 'i-lucide-users',
+      icon: 'i-lucide-shield-user',
       to: '/teacher'
+    },
+    {
+      label: 'Students',
+      icon: 'i-lucide-user-round-cog',
+      to: '/teacher/users'
     },
     {
       label: 'Settings',
@@ -93,16 +108,19 @@ const groups = computed(() => [
     id: 'links',
     label: 'Go to',
     items: links.flat()
-  }, {
+  },
+  {
     id: 'code',
     label: 'Code',
-    items: [{
-      id: 'source',
-      label: 'View page source',
-      icon: 'i-simple-icons-github',
-      to: `https://github.com/nuxt-ui-templates/dashboard/blob/main/app/pages${route.path === '/' ? '/index' : route.path}.vue`,
-      target: '_blank'
-    }]
+    items: [
+      {
+        id: 'source',
+        label: 'View page source',
+        icon: 'i-simple-icons-github',
+        to: `https://github.com/nuxt-ui-templates/dashboard/blob/main/app/pages${route.path === '/' ? '/index' : route.path}.vue`,
+        target: '_blank'
+      }
+    ]
   }
 ])
 
